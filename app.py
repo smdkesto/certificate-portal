@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import re
+import base64
 
 st.set_page_config(
     page_title="NALDA Green Hope Ambassador Certificate Portal", 
@@ -21,6 +22,7 @@ st.markdown("""
             background: linear-gradient(135deg, #f4f7f5 0%, #e8f1ec 50%, #f1f5f9 100%);
         }
         
+        /* Unified Enterprise Hero Card Container */
         .hero-card {
             background: #ffffff;
             padding: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3.5rem);
@@ -31,6 +33,7 @@ st.markdown("""
             width: 100%;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
         
         .hero-card::before {
@@ -43,6 +46,14 @@ st.markdown("""
             background: linear-gradient(90deg, #004d25 0%, #2e7d32 50%, #81c784 100%);
         }
         
+        .agency-logo {
+            width: 82px;
+            height: auto;
+            margin-bottom: 1.25rem;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
         .agency-tag {
             background-color: #e8f5e9;
             color: #004d25 !important;
@@ -53,7 +64,6 @@ st.markdown("""
             padding: 0.45rem 1.1rem;
             border-radius: 50px;
             display: inline-block;
-            margin-top: 1rem;
             margin-bottom: 1.25rem;
             border: 1px solid #c8e6c9;
         }
@@ -72,6 +82,14 @@ st.markdown("""
             color: #475569 !important;
             line-height: 1.6;
             margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Form Alignment & Input Architecture */
+        .stForm {
+            text-align: left;
         }
         
         .stTextInput label {
@@ -122,6 +140,7 @@ st.markdown("""
             border: 1px solid #e2e8f0 !important;
             border-radius: 14px !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+            text-align: left;
         }
         
         [data-testid="stExpander"] summary p,
@@ -150,18 +169,18 @@ st.markdown("""
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CERT_DIR = os.path.join(BASE_DIR, "certificates")
 
-st.markdown("""
+# Secure base64 encoding for logo to prevent layout shifting
+logo_html = ""
+logo_path = os.path.join(BASE_DIR, "logo.png")
+if os.path.exists(logo_path):
+    with open(logo_path, "rb") as f:
+        encoded_logo = base64.b64encode(f.read()).decode()
+        logo_html = f'<img src="data:image/png;base64,{encoded_logo}" class="agency-logo" alt="NALDA Logo">'
+
+st.markdown(f"""
     <div class="hero-card">
-        <div style="text-align: center;">
-""", unsafe_allow_html=True)
-
-# Render official NALDA logo centered if uploaded as 'logo.png'
-if os.path.exists(os.path.join(BASE_DIR, "logo.png")):
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        st.image("logo.png", width=85)
-
-st.markdown("""
+        {logo_html}
+        <div>
             <div class="agency-tag">National Agricultural Land Development Authority</div>
             <div class="portal-heading">Green Hope Ambassador Certificate Portal</div>
             <div class="portal-subtext">
