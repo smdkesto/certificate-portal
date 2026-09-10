@@ -8,7 +8,6 @@ st.set_page_config(
     layout="centered"
 )
 
-# Enterprise CSS Architecture with Strict Contrast Enforcement
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -22,7 +21,6 @@ st.markdown("""
             background: linear-gradient(135deg, #f4f7f5 0%, #e8f1ec 50%, #f1f5f9 100%);
         }
         
-        /* Elevated Structured Card Container */
         .hero-card {
             background: #ffffff;
             padding: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3.5rem);
@@ -75,7 +73,6 @@ st.markdown("""
             margin-bottom: 2.5rem;
         }
         
-        /* Input Architecture */
         .stTextInput label {
             font-weight: 700 !important;
             color: #1e293b !important;
@@ -99,7 +96,6 @@ st.markdown("""
             box-shadow: 0 0 0 4px rgba(0, 77, 37, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05) !important;
         }
         
-        /* Action Button */
         .stButton>button {
             width: 100%;
             background: linear-gradient(135deg, #004d25 0%, #006837 100%);
@@ -120,7 +116,6 @@ st.markdown("""
             transform: translateY(-2px);
         }
         
-        /* Expander & Accordion Contrast Fix (Resolving White Text Bug) */
         [data-testid="stExpander"] {
             background-color: #ffffff !important;
             border: 1px solid #e2e8f0 !important;
@@ -136,7 +131,6 @@ st.markdown("""
             line-height: 1.6 !important;
         }
         
-        /* Alert Text Contrast Fix */
         .stAlert p, .stAlert span {
             color: #0f172a !important;
         }
@@ -174,17 +168,22 @@ with st.form("nalda_standardized_form"):
     )
     submitted = st.form_submit_button("Verify & Download Certificate")
 
+STRICT_EMAIL_REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+
 if submitted:
     clean_email = email_input.strip().lower()
     
     if not clean_email:
         st.warning("Please enter your registered email address.")
-    elif not re.match(r"[^@]+@[^@]+\.[^@]+", clean_email):
+    elif not re.match(STRICT_EMAIL_REGEX, clean_email):
         st.error("Please enter a valid email format (e.g., participant@domain.com).")
     else:
-        file_path = os.path.join(CERT_DIR, f"{clean_email}.pdf")
+        safe_filename = f"{clean_email}.pdf"
+        file_path = os.path.abspath(os.path.join(CERT_DIR, safe_filename))
         
-        if os.path.exists(file_path):
+        if not file_path.startswith(os.path.abspath(CERT_DIR)):
+            st.error("Security validation error detected.")
+        elif os.path.exists(file_path):
             with open(file_path, "rb") as pdf_file:
                 pdf_bytes = pdf_file.read()
             
