@@ -8,17 +8,14 @@ st.set_page_config(
     layout="centered"
 )
 
-# Enterprise CSS with precise scoping to prevent color overrides on Streamlit components
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CERT_DIR = os.path.join(BASE_DIR, "certificates")
-
+# Enterprise CSS Architecture with Strict Contrast Enforcement
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        html, body {
+        html, body, [class*="css"] {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #0f172a;
+            color: #0f172a !important;
         }
         
         .stApp {
@@ -50,7 +47,7 @@ st.markdown("""
         
         .agency-tag {
             background-color: #e8f5e9;
-            color: #004d25;
+            color: #004d25 !important;
             font-size: 0.75rem;
             font-weight: 800;
             letter-spacing: 0.14em;
@@ -65,7 +62,7 @@ st.markdown("""
         .portal-heading {
             font-size: clamp(1.85rem, 4vw, 2.6rem);
             font-weight: 800;
-            color: #0b3820;
+            color: #0b3820 !important;
             margin-bottom: 0.75rem;
             letter-spacing: -0.03em;
             line-height: 1.2;
@@ -73,16 +70,17 @@ st.markdown("""
         
         .portal-subtext {
             font-size: clamp(0.95rem, 2vw, 1.1rem);
-            color: #475569;
+            color: #475569 !important;
             line-height: 1.6;
             margin-bottom: 2.5rem;
         }
         
-        /* Explicit Form & Input Label Styling */
-        .stTextInput label p {
-            font-weight: 750 !important;
+        /* Input Architecture */
+        .stTextInput label {
+            font-weight: 700 !important;
             color: #1e293b !important;
-            font-size: 0.98rem !important;
+            font-size: 0.95rem !important;
+            margin-bottom: 0.5rem !important;
         }
         
         .stTextInput input {
@@ -91,12 +89,8 @@ st.markdown("""
             padding: 0.95rem 1.2rem !important;
             font-size: 1.05rem !important;
             background-color: #f8fafc !important;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
             color: #0f172a !important;
-        }
-        
-        .stTextInput input:hover {
-            border-color: #94a3b8 !important;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         
         .stTextInput input:focus {
@@ -105,10 +99,11 @@ st.markdown("""
             box-shadow: 0 0 0 4px rgba(0, 77, 37, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05) !important;
         }
         
+        /* Action Button */
         .stButton>button {
             width: 100%;
             background: linear-gradient(135deg, #004d25 0%, #006837 100%);
-            color: white;
+            color: #ffffff !important;
             font-weight: 700;
             font-size: 1.05rem;
             padding: 0.95rem 1.2rem;
@@ -122,35 +117,43 @@ st.markdown("""
         
         .stButton>button:hover {
             background: linear-gradient(135deg, #00381b 0%, #004d25 100%);
-            box-shadow: 0 14px 24px -5px rgba(0, 77, 37, 0.4);
             transform: translateY(-2px);
         }
         
-        /* High Contrast Fix for Expander & Validation Text */
-        [data-testid="stExpander"] summary span {
-            color: #0f172a !important;
-            font-weight: 700 !important;
+        /* Expander & Accordion Contrast Fix (Resolving White Text Bug) */
+        [data-testid="stExpander"] {
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 14px !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
         }
         
-        [data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p {
-            color: #334155 !important;
+        [data-testid="stExpander"] summary p,
+        [data-testid="stExpander"] details div p,
+        [data-testid="stExpander"] ul li {
+            color: #1e293b !important;
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
         }
-
-        .stAlert p {
+        
+        /* Alert Text Contrast Fix */
+        .stAlert p, .stAlert span {
             color: #0f172a !important;
-            font-weight: 600 !important;
         }
         
         .footer-info {
             text-align: center;
             font-size: 0.85rem;
-            color: #64748b;
+            color: #64748b !important;
             margin-top: 3rem;
             padding-top: 1.5rem;
             border-top: 1px solid #e2e8f0;
         }
     </style>
 """, unsafe_allow_html=True)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CERT_DIR = os.path.join(BASE_DIR, "certificates")
 
 st.markdown("""
     <div class="hero-card">
