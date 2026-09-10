@@ -8,7 +8,10 @@ st.set_page_config(
     layout="centered"
 )
 
-# World-Class Enterprise UI Styling with Redesigned Input Architecture
+# Resolve absolute path for cross-environment stability (crucial for Render)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CERT_DIR = os.path.join(BASE_DIR, "certificates")
+
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -22,7 +25,6 @@ st.markdown("""
             background: linear-gradient(135deg, #f4f7f5 0%, #e8f1ec 50%, #f1f5f9 100%);
         }
         
-        /* Elevated Structured Card Container */
         .hero-card {
             background: #ffffff;
             padding: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3.5rem);
@@ -75,7 +77,6 @@ st.markdown("""
             margin-bottom: 2.5rem;
         }
         
-        /* Redesigned Enterprise Email Input Styling */
         .stTextInput label {
             font-weight: 700 !important;
             color: #1e293b !important;
@@ -162,7 +163,7 @@ if submitted:
     elif not re.match(r"[^@]+@[^@]+\.[^@]+", clean_email):
         st.error("Please enter a valid email format (e.g., participant@domain.com).")
     else:
-        file_path = os.path.join("certificates", f"{clean_email}.pdf")
+        file_path = os.path.join(CERT_DIR, f"{clean_email}.pdf")
         
         if os.path.exists(file_path):
             with open(file_path, "rb") as pdf_file:
