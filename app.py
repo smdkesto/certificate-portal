@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Resolve absolute path for cross-environment stability (crucial for Render)
+# Enterprise CSS with precise scoping to prevent color overrides on Streamlit components
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CERT_DIR = os.path.join(BASE_DIR, "certificates")
 
@@ -16,7 +16,7 @@ st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        html, body, [class*="css"] {
+        html, body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: #0f172a;
         }
@@ -25,6 +25,7 @@ st.markdown("""
             background: linear-gradient(135deg, #f4f7f5 0%, #e8f1ec 50%, #f1f5f9 100%);
         }
         
+        /* Elevated Structured Card Container */
         .hero-card {
             background: #ffffff;
             padding: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3.5rem);
@@ -77,11 +78,11 @@ st.markdown("""
             margin-bottom: 2.5rem;
         }
         
-        .stTextInput label {
-            font-weight: 700 !important;
+        /* Explicit Form & Input Label Styling */
+        .stTextInput label p {
+            font-weight: 750 !important;
             color: #1e293b !important;
-            font-size: 0.95rem !important;
-            margin-bottom: 0.5rem !important;
+            font-size: 0.98rem !important;
         }
         
         .stTextInput input {
@@ -123,6 +124,21 @@ st.markdown("""
             background: linear-gradient(135deg, #00381b 0%, #004d25 100%);
             box-shadow: 0 14px 24px -5px rgba(0, 77, 37, 0.4);
             transform: translateY(-2px);
+        }
+        
+        /* High Contrast Fix for Expander & Validation Text */
+        [data-testid="stExpander"] summary span {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+        
+        [data-testid="stExpander"] div[data-testid="stMarkdownContainer"] p {
+            color: #334155 !important;
+        }
+
+        .stAlert p {
+            color: #0f172a !important;
+            font-weight: 600 !important;
         }
         
         .footer-info {
