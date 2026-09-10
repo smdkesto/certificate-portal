@@ -155,7 +155,7 @@ st.markdown("""
             <div class="agency-tag">National Agricultural Land Development Authority</div>
             <div class="portal-heading">Green Hope Ambassador Certificate Portal</div>
             <div class="portal-subtext">
-                Enter your registered email address below to securely access and download your official ambassador certificate.
+                Enter your registered email address below to securely access and download your Green Hope ambassador certificate.
             </div>
         </div>
 """, unsafe_allow_html=True)
@@ -190,7 +190,7 @@ if submitted:
             st.success("Credential successfully verified against NALDA records.")
             st.markdown("<br>", unsafe_allow_html=True)
             st.download_button(
-                label="📥 Download Official Certificate (PDF)",
+                label="📥 Download your GreenHope Ambassador Certificate (PDF)",
                 data=pdf_bytes,
                 file_name=f"GREEN_HOPE_Certificate_{clean_email}.pdf",
                 mime="application/pdf"
